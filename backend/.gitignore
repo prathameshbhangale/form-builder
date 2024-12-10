@@ -1,0 +1,64 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore build output directories
+dist/
+build/
+out/
+
+# Ignore TypeScript compiled files
+*.js
+*.js.map
+*.d.ts
+
+# Ignore environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore temporary files and lock files
+*.tmp
+*.lock
+*.cache
+*.bak
+
+# Ignore test coverage reports
+coverage/
+
+# Ignore generated documentation
+doc/
+docs/
+
+# Ignore package manager lock files (optional)
+# Uncomment one if you don't want to track the lock file of your package manager
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Ignore eslint and prettier cache
+.eslintcache
+.prettiercache
+
+# Ignore local TypeORM migration files (optional)
+ormconfig.js
+ormconfig.json
+
+# Ignore misc
+*.log
