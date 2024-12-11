@@ -10,7 +10,7 @@ import { Form } from "./Form";
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn({ type: "int"})
+  @PrimaryGeneratedColumn()
   userId: number;
 
   @Column()

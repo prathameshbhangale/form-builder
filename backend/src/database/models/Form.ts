@@ -31,9 +31,9 @@ export class Form {
     @UpdateDateColumn()
     updatedAt: Date;
   
-    @OneToMany(() => Field, (field) => field.form)
+    @OneToMany(() => Field, (field) => field.form,{ cascade: true })
     fields: Field[];
   
-    @OneToMany(() => Response, (response) => response.form)
+    @OneToMany(() => Response, (response) => response.form,{ cascade: true })
     responses: Response[];
   }
