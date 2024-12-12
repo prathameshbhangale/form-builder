@@ -21,6 +21,9 @@ import {
   
     @Column()
     type: string;
+
+    @Column({nullable: true})
+    placeholder: string;
   
     @Column()
     isRequired: boolean;

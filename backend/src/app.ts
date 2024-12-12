@@ -3,6 +3,7 @@ import { AppDataSource } from './database/dataSource';
 import "reflect-metadata"
 import authRoutes from './routes/auth';
 import formRoutes from './routes/form';
+import fieldformRoutes from './routes/field';
 import cookieParser from 'cookie-parser';
 
 AppDataSource.initialize()
@@ -22,6 +23,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 app.use('/api/auth',authRoutes);
 app.use('/api/form',formRoutes);
+app.use('/api/field',fieldformRoutes);
 
 
 
