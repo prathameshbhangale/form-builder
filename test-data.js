@@ -99,3 +99,7 @@ const fields = [
         updatedAt: new Date("2024-01-03T12:25:00Z"),
     }
 ];
+
+const inputTpes = [
+    "text","number","checkbox","radio","select","date","textarea"
+]

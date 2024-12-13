@@ -3,8 +3,10 @@ import { AppDataSource } from './database/dataSource';
 import "reflect-metadata"
 import authRoutes from './routes/auth';
 import formRoutes from './routes/form';
+import responseRoute from './routes/response';
 import fieldformRoutes from './routes/field';
 import cookieParser from 'cookie-parser';
+import cors from "cors";
 
 AppDataSource.initialize()
     .then(() => console.log("Database connected!"))
@@ -15,6 +17,15 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
+const corsOptions: cors.CorsOptions = {
+  origin: ['http://localhost:5173'], // Allowed origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  credentials: true, // Allow cookies and credentials
+};
+
+// Apply CORS middleware with options
+app.use(cors(corsOptions));
 
 
 // Routes
@@ -24,6 +35,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/auth',authRoutes);
 app.use('/api/form',formRoutes);
 app.use('/api/field',fieldformRoutes);
+app.use('/api/resp',responseRoute);
 
 
 
