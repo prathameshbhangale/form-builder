@@ -1,7 +1,6 @@
 
 import { apiConnector } from "../axiosInstance";
 import { signin_url } from "../api";
-import { Api } from "@reduxjs/toolkit/query";
 
 type UserData = {
     name: string;
@@ -14,7 +13,7 @@ type ApiResponse = {
     message: string;
 };
 
-export const signinapi = (data : UserData, ) : boolean =>{
+export const signinapi =(data : UserData, ) : boolean =>{
     try {
         const response = apiConnector<ApiResponse>("POST",signin_url,data)
         console.log(response)

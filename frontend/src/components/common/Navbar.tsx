@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
             <Link to="/responses" className="hover:underline">Responses</Link>
             </li>
             <li>
-            <Link to="/create" className="hover:underline">Create Form</Link>
+            <Link to="/createForm" className="hover:underline">Create Form</Link>
             </li>
         </ul>
         

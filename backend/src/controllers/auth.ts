@@ -78,12 +78,15 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
         const access_token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
         
         res.setHeader('Authorization', `Bearer ${access_token}`);
-        res.cookie('auth_token', access_token, {
-            httpOnly: true,
-            maxAge: 3600 * 1000 // 1 hour
-        });
-    
-        res.json({ success: true, message: 'Login successful', access_token });
+        const data = {
+            success: true,
+            message: 'User logged in successfully',
+            token: access_token,
+            name: user.name,
+            email: user.email,
+            userId: user.userId
+        }
+        res.json(data);
         
     } catch (error) {
         next(error); 

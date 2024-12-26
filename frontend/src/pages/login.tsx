@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import HiglightText from '../components/common/helpers/HiglightText';
-import axios from 'axios';
+import { loginApi } from '../apis/auth/login';
+import { setUserData } from '../slices/user';
+import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
@@ -8,8 +10,10 @@ const LoginPage: React.FC = () => {
     email: '',
     password: '',
   });
-  const [error, setError] = useState<string>('');
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [error, setError] = useState<string>('');
+  
 
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,23 +27,24 @@ const LoginPage: React.FC = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    try {
-      const response = await axios.post('/api/login', formData);
-      /*
-      
-            fetch api
-      
-      */
+    const response = await loginApi(formData);
 
-      if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token); // Store token in local storage
-        navigate('/'); // Redirect to dashboard after successful login
+      if (response) {
+          // Dispatch the action to update user state
+          dispatch(
+              setUserData({
+                  userId: response.userId,
+                  name: response.name || "",
+                  email: response.email || "",
+                  token: response.token || "",
+              })
+          );
+          console.log(response.token)
+          navigate('/')
+      }else{
+        setError('Invalid email or password');
       }
-    } catch (error) {
-      setError('Invalid email or password');
     }
-  };
 
   return (
     <div className="relative w-full h-screen bg-cover bg-center" style={{ backgroundImage: 'url(/src/assets/dark-theme-background.jpg)' }}>

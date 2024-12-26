@@ -2,16 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface UserState {
   userId: number | null;
-  name: string | null;
-  email: string | null;
-  token: string | null;
+  name: string ;
+  email: string ;
+  token: string ;
 }
 
 const initialState: UserState = {
   userId: null,
-  name: null,
-  email: null,
-  token: null,
+  name: "",
+  email: "",
+  token: localStorage.getItem('token') || "",
 };
 
 const userSlice = createSlice({
@@ -24,14 +24,16 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.token = action.payload.token;
+      if(action.payload.token)
+        localStorage.setItem('token', action.payload.token);
     },
 
     // Clear user data (e.g., on logout)
     clearUserData(state) {
       state.userId = null;
-      state.name = null;
-      state.email = null;
-      state.token = null;
+      state.name = "";
+      state.email = "";
+      state.token = "";
     },
 
     // Update user information (optional, e.g., after user updates profile)

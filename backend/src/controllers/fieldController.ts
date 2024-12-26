@@ -53,6 +53,83 @@ export const insertField = async (req: CustomRequest, res: Response) : Promise<v
     }
 };
 
+export const insertManyFields = async (req: CustomRequest, res: Response): Promise<void> => {
+    try {
+        const fields = req.body; // Expecting an array of field objects
+        if (!Array.isArray(fields) || fields.length === 0) {
+            res.status(400).json({
+                success: false,
+                message: "An array of fields is required."
+            });
+            return;
+        }
+
+        const formRepository = AppDataSource.getRepository(Form);
+        const fieldRepository = AppDataSource.getRepository(Field);
+
+        // Validate all fields have required properties
+        for (const field of fields) {
+            const { label, type, isRequired, order, formId } = field;
+            if (!label || !type || isRequired === undefined || order === undefined || !formId) {
+                res.status(400).json({
+                    success: false,
+                    message: "Each field must include label, type, isRequired, order, and formId."
+                });
+                return;
+            }
+        }
+
+        // Group fields by formId to optimize database queries
+        const groupedFields: { [key: string]: any[] } = fields.reduce((acc, field) => {
+            const { formId } = field;
+            if (!acc[formId]) acc[formId] = [];
+            acc[formId].push(field);
+            return acc;
+        }, {});
+
+        const insertedFields = [];
+
+        for (const formId of Object.keys(groupedFields)) {
+            const form = await formRepository.findOne({ where: { formId: Number(formId) }, relations: ["fields"] });
+            if (!form) {
+                res.status(404).json({
+                    success: false,
+                    message: `Form with ID ${formId} not found.`
+                });
+                return;
+            }
+
+            const newFields = groupedFields[formId].map((field) =>
+                fieldRepository.create({
+                    label: field.label,
+                    type: field.type,
+                    isRequired: field.isRequired,
+                    order: field.order,
+                    options: field.options,
+                    form,
+                    placeholder: field.placeholder
+                })
+            );
+
+            const savedFields = await fieldRepository.save(newFields);
+            insertedFields.push(...savedFields);
+        }
+
+        res.status(201).json({
+            success: true,
+            message: "Fields inserted successfully.",
+            data: insertedFields
+        });
+    } catch (error) {
+        console.error("Error inserting fields:", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error."
+        });
+    }
+};
+
+
 export const deleteField = async (req: CustomRequest, res: Response) : Promise<void> => {
     try {
         const { fieldId } = req.params;
