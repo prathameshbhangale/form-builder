@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createFormApi } from "../apis/forms/create";
 import { RootState } from "../store";
 import { useNavigate } from "react-router-dom";
+import { setformId } from "../slices/field";
 
 const CreateFormPage: React.FC = () => {
     const token = useSelector((state: RootState) => state.user.token);
+    const dispatch = useDispatch()
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [error, setError] = useState<string | null>(null);
@@ -25,6 +27,7 @@ const CreateFormPage: React.FC = () => {
         try {
             response = await createFormApi({ title, message }, token);
             console.log(response)
+            dispatch(setformId(response.form.formId))
         } catch (err: any) {
             setError(err.message || "Failed to create form, Login is required");
         } finally {

@@ -6,7 +6,7 @@ const fields = [
         type: "text",
         isRequired: true,
         order: 1,
-        options: null,
+        options: { placeholder: "I agree to the terms" },  // for ingle inputs
         createdAt: new Date("2024-01-01T10:00:00Z"),
         updatedAt: new Date("2024-01-01T10:05:00Z"),
     },
